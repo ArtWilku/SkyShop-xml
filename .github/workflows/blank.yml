@@ -1,28 +1,26 @@
 name: Aktualizacja XML Allegro
 
 on:
-  schedule:
-    - cron: "0 */4 * * *"
   workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Pobierz repozytorium
-        uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-      - name: Przygotuj Python
-        uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
-      - name: Uruchom generator XML
-        run: python main.py
+      - name: Run XML generator
+        run: python allegro_html_opis_premium.py
 
-      - name: Zapisz zmiany
-        run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add allegro_final.xml
