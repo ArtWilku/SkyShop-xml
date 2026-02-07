@@ -1,0 +1,31 @@
+name: Aktualizacja XML Allegro
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"   # co 6 godzin
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run XML generator
+        run: python generate_xml.py
+
+      - name: Commit and push XML
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add allegro_final.xml
+          git commit -m "Automatyczna aktualizacja XML" || echo "Brak zmian"
+          git push
+
